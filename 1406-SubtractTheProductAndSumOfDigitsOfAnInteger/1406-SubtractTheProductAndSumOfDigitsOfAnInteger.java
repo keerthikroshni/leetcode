@@ -1,0 +1,16 @@
+// Last updated: 7/17/2026, 2:56:59 PM
+class Solution {
+    public int subtractProductAndSum(int n) {
+        int original=n;
+        int sum=0;
+        int product=1;
+        while(n!=0){
+            int digit=n%10;
+            sum=sum+digit;
+            product=product*digit;
+            n=n/10;
+        }
+        int result=product-sum;
+        return result;
+    }
+}

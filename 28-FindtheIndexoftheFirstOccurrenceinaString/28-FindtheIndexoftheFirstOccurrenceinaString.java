@@ -1,35 +1,32 @@
-// Last updated: 7/21/2026, 9:51:33 AM
+// Last updated: 7/21/2026, 9:52:30 AM
 1class Solution {
-2    List<List<Integer>> result = new ArrayList<>();
-3
-4    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-5        Arrays.sort(candidates);
-6        backtrack(candidates, target, 0, new ArrayList<>());
-7        return result;
-8    }
-9
-10    private void backtrack(int[] candidates, int target, int index, List<Integer> current) {
-11        if (target == 0) {
-12            result.add(new ArrayList<>(current));
-13            return;
-14        }
+2    public String multiply(String num1, String num2) {
+3        if (num1.equals("0") || num2.equals("0")) {
+4            return "0";
+5        }
+6
+7        int m = num1.length();
+8        int n = num2.length();
+9        int[] result = new int[m + n];
+10
+11        for (int i = m - 1; i >= 0; i--) {
+12            for (int j = n - 1; j >= 0; j--) {
+13                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+14                int sum = mul + result[i + j + 1];
 15
-16        if (target < 0) {
-17            return;
-18        }
-19
-20        for (int i = index; i < candidates.length; i++) {
-21            if (i > index && candidates[i] == candidates[i - 1]) {
-22                continue;
-23            }
-24
-25            if (candidates[i] > target) {
-26                break;
-27            }
+16                result[i + j + 1] = sum % 10;
+17                result[i + j] += sum / 10;
+18            }
+19        }
+20
+21        StringBuilder sb = new StringBuilder();
+22
+23        for (int num : result) {
+24            if (!(sb.length() == 0 && num == 0)) {
+25                sb.append(num);
+26            }
+27        }
 28
-29            current.add(candidates[i]);
-30            backtrack(candidates, target - candidates[i], i + 1, current);
-31            current.remove(current.size() - 1);
-32        }
-33    }
-34}
+29        return sb.toString();
+30    }
+31}

@@ -1,46 +1,24 @@
-// Last updated: 7/21/2026, 9:47:39 AM
+// Last updated: 7/21/2026, 9:48:40 AM
 1class Solution {
-2    public int[] searchRange(int[] nums, int target) {
-3        return new int[]{findFirst(nums, target), findLast(nums, target)};
-4    }
-5
-6    private int findFirst(int[] nums, int target) {
-7        int left = 0, right = nums.length - 1;
-8        int ans = -1;
-9
-10        while (left <= right) {
-11            int mid = left + (right - left) / 2;
+2    public boolean isValidSudoku(char[][] board) {
+3        HashSet<String> set = new HashSet<>();
+4
+5        for (int i = 0; i < 9; i++) {
+6            for (int j = 0; j < 9; j++) {
+7                char num = board[i][j];
+8
+9                if (num == '.') {
+10                    continue;
+11                }
 12
-13            if (nums[mid] == target) {
-14                ans = mid;
-15                right = mid - 1;
-16            } else if (nums[mid] < target) {
-17                left = mid + 1;
-18            } else {
-19                right = mid - 1;
-20            }
-21        }
-22
-23        return ans;
-24    }
-25
-26    private int findLast(int[] nums, int target) {
-27        int left = 0, right = nums.length - 1;
-28        int ans = -1;
-29
-30        while (left <= right) {
-31            int mid = left + (right - left) / 2;
-32
-33            if (nums[mid] == target) {
-34                ans = mid;
-35                left = mid + 1;
-36            } else if (nums[mid] < target) {
-37                left = mid + 1;
-38            } else {
-39                right = mid - 1;
-40            }
-41        }
-42
-43        return ans;
-44    }
-45}
+13                if (!set.add(num + "row" + i) ||
+14                    !set.add(num + "col" + j) ||
+15                    !set.add(num + "box" + (i / 3) + "-" + (j / 3))) {
+16                    return false;
+17                }
+18            }
+19        }
+20
+21        return true;
+22    }
+23}

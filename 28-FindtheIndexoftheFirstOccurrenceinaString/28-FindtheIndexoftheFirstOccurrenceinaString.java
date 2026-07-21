@@ -1,4 +1,4 @@
-// Last updated: 7/21/2026, 9:40:25 AM
+// Last updated: 7/21/2026, 9:41:45 AM
 1/**
 2 * Definition for singly-linked list.
 3 * public class ListNode {
@@ -10,23 +10,38 @@
 9 * }
 10 */
 11class Solution {
-12    public ListNode swapPairs(ListNode head) {
+12    public ListNode reverseKGroup(ListNode head, int k) {
 13        ListNode dummy = new ListNode(0);
 14        dummy.next = head;
-15
-16        ListNode prev = dummy;
-17
-18        while (prev.next != null && prev.next.next != null) {
-19            ListNode first = prev.next;
-20            ListNode second = first.next;
-21
-22            first.next = second.next;
-23            second.next = first;
-24            prev.next = second;
-25
-26            prev = first;
-27        }
-28
-29        return dummy.next;
-30    }
-31}
+15        ListNode prevGroup = dummy;
+16
+17        while (true) {
+18            ListNode kth = prevGroup;
+19
+20            for (int i = 0; i < k && kth != null; i++) {
+21                kth = kth.next;
+22            }
+23
+24            if (kth == null) {
+25                break;
+26            }
+27
+28            ListNode groupNext = kth.next;
+29            ListNode prev = groupNext;
+30            ListNode curr = prevGroup.next;
+31
+32            while (curr != groupNext) {
+33                ListNode temp = curr.next;
+34                curr.next = prev;
+35                prev = curr;
+36                curr = temp;
+37            }
+38
+39            ListNode temp = prevGroup.next;
+40            prevGroup.next = kth;
+41            prevGroup = temp;
+42        }
+43
+44        return dummy.next;
+45    }
+46}

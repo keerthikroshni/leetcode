@@ -1,24 +1,25 @@
-// Last updated: 7/21/2026, 9:48:40 AM
+// Last updated: 7/21/2026, 9:49:37 AM
 1class Solution {
-2    public boolean isValidSudoku(char[][] board) {
-3        HashSet<String> set = new HashSet<>();
+2    public String countAndSay(int n) {
+3        String result = "1";
 4
-5        for (int i = 0; i < 9; i++) {
-6            for (int j = 0; j < 9; j++) {
-7                char num = board[i][j];
+5        for (int i = 2; i <= n; i++) {
+6            StringBuilder sb = new StringBuilder();
+7            int count = 1;
 8
-9                if (num == '.') {
-10                    continue;
-11                }
-12
-13                if (!set.add(num + "row" + i) ||
-14                    !set.add(num + "col" + j) ||
-15                    !set.add(num + "box" + (i / 3) + "-" + (j / 3))) {
-16                    return false;
-17                }
-18            }
-19        }
-20
-21        return true;
-22    }
-23}
+9            for (int j = 1; j <= result.length(); j++) {
+10                if (j < result.length() && result.charAt(j) == result.charAt(j - 1)) {
+11                    count++;
+12                } else {
+13                    sb.append(count);
+14                    sb.append(result.charAt(j - 1));
+15                    count = 1;
+16                }
+17            }
+18
+19            result = sb.toString();
+20        }
+21
+22        return result;
+23    }
+24}

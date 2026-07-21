@@ -1,24 +1,41 @@
-// Last updated: 7/21/2026, 9:32:18 AM
-1class Solution {
-2    List<String> result = new ArrayList<>();
-3
-4    public List<String> generateParenthesis(int n) {
-5        backtrack("", 0, 0, n);
-6        return result;
-7    }
-8
-9    private void backtrack(String current, int open, int close, int n) {
-10        if (current.length() == 2 * n) {
-11            result.add(current);
-12            return;
-13        }
-14
-15        if (open < n) {
-16            backtrack(current + "(", open + 1, close, n);
-17        }
+// Last updated: 7/21/2026, 9:33:10 AM
+1/**
+2 * Definition for singly-linked list.
+3 * public class ListNode {
+4 *     int val;
+5 *     ListNode next;
+6 *     ListNode() {}
+7 *     ListNode(int val) { this.val = val; }
+8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+9 * }
+10 */
+11class Solution {
+12    public ListNode mergeKLists(ListNode[] lists) {
+13        if (lists == null || lists.length == 0) {
+14            return null;
+15        }
+16
+17        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
 18
-19        if (close < open) {
-20            backtrack(current + ")", open, close + 1, n);
-21        }
-22    }
-23}
+19        for (ListNode node : lists) {
+20            if (node != null) {
+21                pq.offer(node);
+22            }
+23        }
+24
+25        ListNode dummy = new ListNode(0);
+26        ListNode tail = dummy;
+27
+28        while (!pq.isEmpty()) {
+29            ListNode node = pq.poll();
+30            tail.next = node;
+31            tail = tail.next;
+32
+33            if (node.next != null) {
+34                pq.offer(node.next);
+35            }
+36        }
+37
+38        return dummy.next;
+39    }
+40}

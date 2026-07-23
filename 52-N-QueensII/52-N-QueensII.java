@@ -1,20 +1,21 @@
-// Last updated: 7/23/2026, 9:07:24 AM
-1class Solution {
-2    public boolean canJump(int[] nums) {
-3        int farthest = 0;
-4
-5        for (int i = 0; i < nums.length; i++) {
-6            if (i > farthest) {
-7                return false;
-8            }
-9
-10            farthest = Math.max(farthest, i + nums[i]);
-11
-12            if (farthest >= nums.length - 1) {
-13                return true;
-14            }
-15        }
-16
-17        return true;
-18    }
-19}
+// Last updated: 7/23/2026, 9:08:17 AM
+1import java.util.*;
+2
+3class Solution {
+4    public int[][] merge(int[][] intervals) {
+5        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+6
+7        List<int[]> result = new ArrayList<>();
+8
+9        for (int[] interval : intervals) {
+10            if (result.isEmpty() || result.get(result.size() - 1)[1] < interval[0]) {
+11                result.add(interval);
+12            } else {
+13                result.get(result.size() - 1)[1] =
+14                        Math.max(result.get(result.size() - 1)[1], interval[1]);
+15            }
+16        }
+17
+18        return result.toArray(new int[result.size()][]);
+19    }
+20}

@@ -1,38 +1,36 @@
-// Last updated: 7/23/2026, 9:05:37 AM
+// Last updated: 7/23/2026, 9:06:41 AM
 1class Solution {
-2    int count = 0;
-3
-4    public int totalNQueens(int n) {
-5        boolean[] cols = new boolean[n];
-6        boolean[] diag1 = new boolean[2 * n];
-7        boolean[] diag2 = new boolean[2 * n];
-8
-9        solve(0, n, cols, diag1, diag2);
-10        return count;
-11    }
-12
-13    private void solve(int row, int n, boolean[] cols, boolean[] diag1, boolean[] diag2) {
-14        if (row == n) {
-15            count++;
-16            return;
-17        }
-18
-19        for (int col = 0; col < n; col++) {
-20            int d1 = row - col + n;
-21            int d2 = row + col;
-22
-23            if (cols[col] || diag1[d1] || diag2[d2])
-24                continue;
-25
-26            cols[col] = true;
-27            diag1[d1] = true;
-28            diag2[d2] = true;
-29
-30            solve(row + 1, n, cols, diag1, diag2);
-31
-32            cols[col] = false;
-33            diag1[d1] = false;
-34            diag2[d2] = false;
-35        }
-36    }
-37}
+2    public List<Integer> spiralOrder(int[][] matrix) {
+3        List<Integer> result = new ArrayList<>();
+4
+5        int top = 0;
+6        int bottom = matrix.length - 1;
+7        int left = 0;
+8        int right = matrix[0].length - 1;
+9
+10        while (top <= bottom && left <= right) {
+11            for (int i = left; i <= right; i++) {
+12                result.add(matrix[top][i]);
+13            }
+14            top++;
+15            for (int i = top; i <= bottom; i++) {
+16                result.add(matrix[i][right]);
+17            }
+18            right--;
+19            if (top <= bottom) {
+20                for (int i = right; i >= left; i--) {
+21                    result.add(matrix[bottom][i]);
+22                }
+23                bottom--;
+24            }
+25            if (left <= right) {
+26                for (int i = bottom; i >= top; i--) {
+27                    result.add(matrix[i][left]);
+28                }
+29                left++;
+30            }
+31        }
+32
+33        return result;
+34    }
+35}

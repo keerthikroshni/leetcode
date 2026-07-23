@@ -1,30 +1,33 @@
-// Last updated: 7/23/2026, 9:14:25 AM
+// Last updated: 7/23/2026, 9:15:26 AM
 1class Solution {
-2    public int minDistance(String word1, String word2) {
-3        int m = word1.length();
-4        int n = word2.length();
-5
-6        int[][] dp = new int[m + 1][n + 1];
-7
-8        for (int i = 0; i <= m; i++) {
-9            dp[i][0] = i;
-10        }
-11
-12        for (int j = 0; j <= n; j++) {
-13            dp[0][j] = j;
-14        }
-15
-16        for (int i = 1; i <= m; i++) {
-17            for (int j = 1; j <= n; j++) {
-18                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-19                    dp[i][j] = dp[i - 1][j - 1];
-20                } else {
-21                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1],
-22                                   Math.min(dp[i - 1][j], dp[i][j - 1]));
-23                }
-24            }
-25        }
-26
-27        return dp[m][n];
-28    }
-29}
+2    public String minWindow(String s, String t) {
+3        if (s.length() < t.length()) return "";
+4        int[] need = new int[128];
+5        for (char c : t.toCharArray()) {
+6            need[c]++;
+7        }
+8        int left = 0, right = 0;
+9        int count = t.length();
+10        int minLen = Integer.MAX_VALUE;
+11        int start = 0;
+12        while (right < s.length()) {
+13            if (need[s.charAt(right)] > 0) {
+14                count--;
+15            }
+16            need[s.charAt(right)]--;
+17            right++;
+18            while (count == 0) {
+19                if (right - left < minLen) {
+20                    minLen = right - left;
+21                    start = left;
+22                }
+23                need[s.charAt(left)]++;
+24                if (need[s.charAt(left)] > 0) {
+25                    count++;
+26                }
+27                left++;
+28            }
+29        }
+30        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+31    }
+32}

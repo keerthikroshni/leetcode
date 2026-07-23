@@ -1,21 +1,25 @@
-// Last updated: 7/23/2026, 9:08:17 AM
+// Last updated: 7/23/2026, 9:09:18 AM
 1import java.util.*;
-2
-3class Solution {
-4    public int[][] merge(int[][] intervals) {
-5        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-6
-7        List<int[]> result = new ArrayList<>();
-8
-9        for (int[] interval : intervals) {
-10            if (result.isEmpty() || result.get(result.size() - 1)[1] < interval[0]) {
-11                result.add(interval);
-12            } else {
-13                result.get(result.size() - 1)[1] =
-14                        Math.max(result.get(result.size() - 1)[1], interval[1]);
-15            }
-16        }
-17
-18        return result.toArray(new int[result.size()][]);
-19    }
-20}
+2class Solution {
+3    public int[][] insert(int[][] intervals, int[] newInterval) {
+4        List<int[]> result = new ArrayList<>();
+5        int i = 0;
+6        int n = intervals.length;
+7        while (i < n && intervals[i][1] < newInterval[0]) {
+8            result.add(intervals[i]);
+9            i++;
+10        }
+11        while (i < n && intervals[i][0] <= newInterval[1]) {
+12            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+13            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+14            i++;
+15        }
+16        result.add(newInterval);
+17        while (i < n) {
+18            result.add(intervals[i]);
+19            i++;
+20        }
+21
+22        return result.toArray(new int[result.size()][]);
+23    }
+24}

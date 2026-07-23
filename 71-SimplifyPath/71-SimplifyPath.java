@@ -1,33 +1,33 @@
-// Last updated: 7/23/2026, 9:15:26 AM
+// Last updated: 7/23/2026, 9:17:41 AM
 1class Solution {
-2    public String minWindow(String s, String t) {
-3        if (s.length() < t.length()) return "";
-4        int[] need = new int[128];
-5        for (char c : t.toCharArray()) {
-6            need[c]++;
-7        }
-8        int left = 0, right = 0;
-9        int count = t.length();
-10        int minLen = Integer.MAX_VALUE;
-11        int start = 0;
-12        while (right < s.length()) {
-13            if (need[s.charAt(right)] > 0) {
-14                count--;
-15            }
-16            need[s.charAt(right)]--;
-17            right++;
-18            while (count == 0) {
-19                if (right - left < minLen) {
-20                    minLen = right - left;
-21                    start = left;
-22                }
-23                need[s.charAt(left)]++;
-24                if (need[s.charAt(left)] > 0) {
-25                    count++;
-26                }
-27                left++;
-28            }
-29        }
-30        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+2    public boolean exist(char[][] board, String word) {
+3        int m = board.length;
+4        int n = board[0].length;
+5        for (int i = 0; i < m; i++) {
+6            for (int j = 0; j < n; j++) {
+7                if (dfs(board, word, i, j, 0)) {
+8                    return true;
+9                }
+10            }
+11        }
+12        return false;
+13    }
+14    private boolean dfs(char[][] board, String word, int i, int j, int index) {
+15        if (index == word.length()) {
+16            return true;
+17        }
+18        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length ||
+19            board[i][j] != word.charAt(index)) {
+20            return false;
+21        }
+22        char temp = board[i][j];
+23        board[i][j] = '#';
+24        boolean found = dfs(board, word, i + 1, j, index + 1) ||
+25                        dfs(board, word, i - 1, j, index + 1) ||
+26                        dfs(board, word, i, j + 1, index + 1) ||
+27                        dfs(board, word, i, j - 1, index + 1);
+28
+29        board[i][j] = temp;
+30        return found;
 31    }
 32}

@@ -1,33 +1,45 @@
-// Last updated: 7/31/2026, 8:59:08 AM
-1/**
-2 * Definition for singly-linked list.
-3 * public class ListNode {
-4 *     int val;
-5 *     ListNode next;
-6 *     ListNode() {}
-7 *     ListNode(int val) { this.val = val; }
-8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-9 * }
-10 */
-11class Solution {
-12    public ListNode deleteDuplicates(ListNode head) {
-13        ListNode dummy = new ListNode(0);
-14        dummy.next = head;
-15
-16        ListNode prev = dummy;
+// Last updated: 7/31/2026, 9:00:01 AM
+1class Solution {
+2    private Map<String, Boolean> memo = new HashMap<>();
+3
+4    public boolean isScramble(String s1, String s2) {
+5        if (s1.equals(s2))
+6            return true;
+7
+8        String key = s1 + "#" + s2;
+9        if (memo.containsKey(key))
+10            return memo.get(key);
+11
+12        int[] count = new int[26];
+13        for (int i = 0; i < s1.length(); i++) {
+14            count[s1.charAt(i) - 'a']++;
+15            count[s2.charAt(i) - 'a']--;
+16        }
 17
-18        while (head != null) {
-19            if (head.next != null && head.val == head.next.val) {
-20                while (head.next != null && head.val == head.next.val) {
-21                    head = head.next;
-22                }
-23                prev.next = head.next;
-24            } else {
-25                prev = prev.next;
-26            }
-27            head = head.next;
-28        }
-29
-30        return dummy.next;
-31    }
-32}
+18        for (int c : count) {
+19            if (c != 0) {
+20                memo.put(key, false);
+21                return false;
+22            }
+23        }
+24
+25        int n = s1.length();
+26
+27        for (int i = 1; i < n; i++) {
+28            if (isScramble(s1.substring(0, i), s2.substring(0, i)) &&
+29                isScramble(s1.substring(i), s2.substring(i))) {
+30                memo.put(key, true);
+31                return true;
+32            }
+33
+34            if (isScramble(s1.substring(0, i), s2.substring(n - i)) &&
+35                isScramble(s1.substring(i), s2.substring(0, n - i))) {
+36                memo.put(key, true);
+37                return true;
+38            }
+39        }
+40
+41        memo.put(key, false);
+42        return false;
+43    }
+44}

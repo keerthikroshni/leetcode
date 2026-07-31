@@ -1,44 +1,33 @@
-// Last updated: 7/31/2026, 8:49:20 AM
-1/**
-2 * Definition for singly-linked list.
-3 * public class ListNode {
-4 *     int val;
-5 *     ListNode next;
-6 *     ListNode() {}
-7 *     ListNode(int val) { this.val = val; }
-8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-9 * }
-10 */
-11class Solution {
-12    public ListNode rotateRight(ListNode head, int k) {
-13        if (head == null || head.next == null || k == 0)
-14            return head;
-15
-16        ListNode tail = head;
-17        int length = 1;
-18
-19        while (tail.next != null) {
-20            tail = tail.next;
-21            length++;
-22        }
-23
-24        k = k % length;
-25
-26        if (k == 0)
-27            return head;
-28
-29        tail.next = head;
-30
-31        int steps = length - k;
-32        ListNode newTail = head;
-33
-34        for (int i = 1; i < steps; i++) {
-35            newTail = newTail.next;
-36        }
-37
-38        ListNode newHead = newTail.next;
-39        newTail.next = null;
-40
-41        return newHead;
-42    }
-43}
+// Last updated: 7/31/2026, 8:50:04 AM
+1class Solution {
+2    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+3        int m = obstacleGrid.length;
+4        int n = obstacleGrid[0].length;
+5
+6        int[][] dp = new int[m][n];
+7
+8        if (obstacleGrid[0][0] == 1)
+9            return 0;
+10
+11        dp[0][0] = 1;
+12
+13        for (int i = 1; i < m; i++) {
+14            if (obstacleGrid[i][0] == 0)
+15                dp[i][0] = dp[i - 1][0];
+16        }
+17
+18        for (int j = 1; j < n; j++) {
+19            if (obstacleGrid[0][j] == 0)
+20                dp[0][j] = dp[0][j - 1];
+21        }
+22
+23        for (int i = 1; i < m; i++) {
+24            for (int j = 1; j < n; j++) {
+25                if (obstacleGrid[i][j] == 0)
+26                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+27            }
+28        }
+29
+30        return dp[m - 1][n - 1];
+31    }
+32}

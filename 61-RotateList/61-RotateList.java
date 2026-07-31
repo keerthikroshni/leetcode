@@ -1,27 +1,61 @@
-// Last updated: 7/31/2026, 8:50:58 AM
+// Last updated: 7/31/2026, 8:52:50 AM
 1class Solution {
-2    public int minPathSum(int[][] grid) {
-3        int m = grid.length;
-4        int n = grid[0].length;
+2    public void setZeroes(int[][] matrix) {
+3        int m = matrix.length;
+4        int n = matrix[0].length;
 5
-6        int[][] dp = new int[m][n];
-7
-8        dp[0][0] = grid[0][0];
-9
-10        for (int i = 1; i < m; i++) {
-11            dp[i][0] = dp[i - 1][0] + grid[i][0];
-12        }
-13
-14        for (int j = 1; j < n; j++) {
-15            dp[0][j] = dp[0][j - 1] + grid[0][j];
-16        }
-17
-18        for (int i = 1; i < m; i++) {
-19            for (int j = 1; j < n; j++) {
-20                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
-21            }
-22        }
-23
-24        return dp[m - 1][n - 1];
-25    }
-26}
+6        boolean firstRow = false;
+7        boolean firstCol = false;
+8
+9        for (int i = 0; i < m; i++) {
+10            if (matrix[i][0] == 0) {
+11                firstCol = true;
+12                break;
+13            }
+14        }
+15
+16        for (int j = 0; j < n; j++) {
+17            if (matrix[0][j] == 0) {
+18                firstRow = true;
+19                break;
+20            }
+21        }
+22
+23        for (int i = 1; i < m; i++) {
+24            for (int j = 1; j < n; j++) {
+25                if (matrix[i][j] == 0) {
+26                    matrix[i][0] = 0;
+27                    matrix[0][j] = 0;
+28                }
+29            }
+30        }
+31
+32        for (int i = 1; i < m; i++) {
+33            if (matrix[i][0] == 0) {
+34                for (int j = 1; j < n; j++) {
+35                    matrix[i][j] = 0;
+36                }
+37            }
+38        }
+39
+40        for (int j = 1; j < n; j++) {
+41            if (matrix[0][j] == 0) {
+42                for (int i = 1; i < m; i++) {
+43                    matrix[i][j] = 0;
+44                }
+45            }
+46        }
+47
+48        if (firstRow) {
+49            for (int j = 0; j < n; j++) {
+50                matrix[0][j] = 0;
+51            }
+52        }
+53
+54        if (firstCol) {
+55            for (int i = 0; i < m; i++) {
+56                matrix[i][0] = 0;
+57            }
+58        }
+59    }
+60}

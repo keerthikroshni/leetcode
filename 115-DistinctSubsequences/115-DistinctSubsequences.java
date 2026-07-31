@@ -1,25 +1,36 @@
-// Last updated: 7/31/2026, 9:09:41 AM
+// Last updated: 7/31/2026, 9:10:28 AM
 1class Solution {
-2    public int minCut(String s) {
-3        int n = s.length();
-4        boolean[][] palindrome = new boolean[n][n];
-5        int[] dp = new int[n];
-6        for (int i = 0; i < n; i++) {
-7            dp[i] = i;
-8        }
-9        for (int end = 0; end < n; end++) {
-10            for (int start = 0; start <= end; start++) {
-11                if (s.charAt(start) == s.charAt(end) &&
-12                    (end - start <= 2 || palindrome[start + 1][end - 1])) {
-13                    palindrome[start][end] = true;
-14                    if (start == 0) {
-15                        dp[end] = 0;
-16                    } else {
-17                        dp[end] = Math.min(dp[end], dp[start - 1] + 1);
-18                    }
-19                }
-20            }
-21        }
-22        return dp[n - 1];
-23    }
-24}
+2    public List<String> wordBreak(String s, List<String> wordDict) {
+3        Set<String> dict = new HashSet<>(wordDict);
+4        Map<String, List<String>> memo = new HashMap<>();
+5        return dfs(s, dict, memo);
+6    }
+7
+8    private List<String> dfs(String s, Set<String> dict, Map<String, List<String>> memo) {
+9        if (memo.containsKey(s))
+10            return memo.get(s);
+11
+12        List<String> result = new ArrayList<>();
+13
+14        if (s.length() == 0) {
+15            result.add("");
+16            return result;
+17        }
+18
+19        for (String word : dict) {
+20            if (s.startsWith(word)) {
+21                List<String> subList = dfs(s.substring(word.length()), dict, memo);
+22
+23                for (String sub : subList) {
+24                    if (sub.isEmpty())
+25                        result.add(word);
+26                    else
+27                        result.add(word + " " + sub);
+28                }
+29            }
+30        }
+31
+32        memo.put(s, result);
+33        return result;
+34    }
+35}

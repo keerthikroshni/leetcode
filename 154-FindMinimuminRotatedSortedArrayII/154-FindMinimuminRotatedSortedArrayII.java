@@ -1,21 +1,19 @@
-// Last updated: 8/11/2026, 9:24:53 AM
+// Last updated: 8/11/2026, 9:25:35 AM
 1class Solution {
-2    public int[] twoSum(int[] numbers, int target) {
+2    public int minSubArrayLen(int target, int[] nums) {
 3        int left = 0;
-4        int right = numbers.length - 1;
-5
-6        while (left < right) {
-7            int sum = numbers[left] + numbers[right];
-8
-9            if (sum == target) {
-10                return new int[]{left + 1, right + 1};
-11            } else if (sum < target) {
-12                left++;
-13            } else {
-14                right--;
-15            }
-16        }
-17
-18        return new int[]{-1, -1};
-19    }
-20}
+4        int sum = 0;
+5        int minLen = Integer.MAX_VALUE;
+6
+7        for (int right = 0; right < nums.length; right++) {
+8            sum += nums[right];
+9
+10            while (sum >= target) {
+11                minLen = Math.min(minLen, right - left + 1);
+12                sum -= nums[left++];
+13            }
+14        }
+15
+16        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+17    }
+18}
